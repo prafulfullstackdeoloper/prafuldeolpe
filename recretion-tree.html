@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Recreation Investors — Smart Investment Platform</title>
+  <meta name="description" content="Modern, responsive landing page for an investment app with animations, features, pricing, and testimonials.">
+
+  <style>
+    /* ROOT */
+    :root {
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#9aa6bb;
+      --glass:rgba(255,255,255,0.04);
+      --glass-2:rgba(255,255,255,0.03);
+      --accent:linear-gradient(90deg,#6ee7b7,#60a5fa);
+      --accent-color:#60a5fa;
+      --radius:14px;
+      --max-width:1120px;
+      --transition:0.3s ease;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:"Inter",sans-serif;
+      background:radial-gradient(1200px 800px at 10% 10%,rgba(96,165,250,0.06),transparent 10%),
+      radial-gradient(800px 700px at 90% 90%,rgba(110,231,183,0.04),transparent 12%),
+      var(--bg);
+      color:#e6eef8;
+      padding:clamp(16px, 4vw, 28px);
+      display:flex;
+      justify-content:center;
+      scroll-behavior:smooth;
+      min-height:100vh;
+    }
+
+    .container{width:100%;max-width:var(--max-width);}
+
+    /* ---------------- HEADER ---------------- */
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-bottom:clamp(20px, 4vw, 28px);
+      gap:12px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:clamp(8px, 2vw, 12px);
+      flex:1;
+      min-width:200px;
+    }
+    
+    .brand h1{
+      font-size:clamp(16px, 3vw, 20px);
+    }
+    
+    .brand .muted{
+      font-size:clamp(10px, 2vw, 12px);
+    }
+    
+    .logo{
+      width:clamp(40px, 8vw, 46px);
+      height:clamp(40px, 8vw, 46px);
+      border-radius:12px;
+      background:var(--accent);
+      display:grid;
+      place-items:center;
+      color:#04263b;
+      font-weight:700;
+      animation:pulse 2.4s infinite alternate;
+      font-size:clamp(14px, 3vw, 16px);
+      flex-shrink:0;
+    }
+
+    @keyframes pulse {
+      from{box-shadow:0 0 0 0 rgba(110,231,183,0.4);}
+      to{box-shadow:0 0 0 10px rgba(110,231,183,0);}
+    }
+
+    nav{
+      display:flex;
+      gap:12px;
+      transition:var(--transition);
+      align-items:center;
+    }
+
+    nav a{
+      padding:clamp(8px, 2vw, 10px) clamp(10px, 2vw, 14px);
+      font-size:clamp(12px, 2vw, 14px);
+      color:var(--muted);
+      text-decoration:none;
+      border-radius:10px;
+      transition:var(--transition);
+      white-space:nowrap;
+    }
+
+    nav a:hover{background:var(--glass-2);color:#fff;}
+
+    nav .cta{
+      background:var(--accent);
+      color:#04263b;
+      font-weight:700;
+    }
+
+    .mobile-toggle{
+      display:none;
+      background:var(--glass);
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.1);
+      color:#e6eef8;
+      cursor:pointer;
+      font-size:18px;
+    }
+
+    /* ---------------- HERO ---------------- */
+    .hero{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:clamp(20px, 4vw, 28px);
+      padding:clamp(20px, 4vw, 28px);
+      background:rgba(255,255,255,0.02);
+      border-radius:var(--radius);
+      box-shadow:0 8px 30px rgba(0,0,0,0.5);
+      overflow:hidden;
+    }
+
+    .eyebrow{
+      display:inline-block;
+      background:var(--glass);
+      padding:6px 12px;
+      border-radius:999px;
+      font-weight:600;
+      margin-bottom:12px;
+      opacity:0;
+      animation:slideLeft 0.8s ease forwards;
+      font-size:clamp(11px, 2vw, 14px);
+    }
+
+    @keyframes slideLeft {
+      from{transform:translateX(-40px);opacity:0;}
+      to{transform:translateX(0);opacity:1;}
+    }
+
+    .hero-left h2{
+      font-size:clamp(24px, 5vw, 38px);
+      background:linear-gradient(90deg,#0f3e2c,#396fb1,#337fdd);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      margin-bottom:12px;
+      opacity:0;
+      animation:fadeUp 1.1s ease forwards 0.2s;
+      line-height:1.2;
+    }
+
+    @keyframes fadeUp {
+      from{opacity:0;transform:translateY(20px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
+    .hero p{
+      color:var(--muted);
+      margin-bottom:18px;
+      opacity:0;
+      animation:fadeUp 1s ease forwards 0.35s;
+      font-size:clamp(14px, 2.5vw, 16px);
+      line-height:1.6;
+    }
+
+    .cta-row{
+      display:flex;
+      gap:12px;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:clamp(10px, 2vw, 12px) clamp(14px, 3vw, 18px);
+      border-radius:12px;
+      font-weight:700;
+      text-decoration:none;
+      transition:var(--transition);
+      font-size:clamp(13px, 2vw, 15px);
+      text-align:center;
+      border:none;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .primary{background:var(--accent);color:#04263b;}
+    .ghost{border:1px solid rgba(255,255,255,0.1);color:var(--muted);background:transparent;}
+
+    .btn:hover{transform:translateY(-2px);opacity:0.9;}
+
+    .strip{
+      display:flex;
+      gap:12px;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+    
+    .stat{
+      background:var(--glass-2);
+      padding:clamp(8px, 2vw, 10px) clamp(10px, 2vw, 14px);
+      border-radius:12px;
+      color:var(--muted);
+      font-size:clamp(11px, 2vw, 14px);
+    }
+
+    /* CARD */
+    .card{
+      padding:clamp(16px, 3vw, 20px);
+      border-radius:14px;
+      background:linear-gradient(180deg,rgba(255,255,255,0.03),transparent);
+      animation:fadeIn 1s ease forwards 0.4s;
+      opacity:0;
+      transform:translateY(20px);
+    }
+
+    @keyframes fadeIn {
+      to{opacity:1;transform:none;}
+    }
+
+    .balance{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:16px;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .chip{
+      background:rgba(255,255,255,0.07);
+      padding:6px 10px;
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      font-size:clamp(11px, 2vw, 13px);
+      white-space:nowrap;
+    }
+
+    .small{font-size:clamp(11px, 2vw, 13px);}
+    .big{font-size:clamp(18px, 4vw, 22px);font-weight:700;}
+
+    .spark path{
+      stroke-dasharray:2000;
+      stroke-dashoffset:2000;
+      animation:draw 3s ease forwards 1s;
+    }
+    @keyframes draw{to{stroke-dashoffset:0;}}
+
+    /* ---------------- FORM ---------------- */
+    #signup{
+      margin-top:16px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    
+    #signup input,
+    #signup select{
+      padding:clamp(10px, 2vw, 12px);
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.1);
+      background:var(--glass);
+      color:#e6eef8;
+      font-size:clamp(13px, 2vw, 14px);
+    }
+    
+    #signup input{
+      flex:1;
+      min-width:200px;
+    }
+    
+    #signup select{
+      min-width:160px;
+    }
+
+    /* ---------------- FEATURES / PRICING / TESTIMONIALS ---------------- */
+    section{margin-top:clamp(32px, 6vw, 46px);}
+
+    .features,.testimonials{
+      display:grid;
+      gap:clamp(14px, 3vw, 18px);
+      grid-template-columns:repeat(auto-fit,minmax(min(100%, 260px),1fr));
+    }
+
+    .feature{
+      background:var(--card);
+      padding:clamp(16px, 3vw, 20px);
+      border-radius:12px;
+      border:1px solid transparent;
+      transition:var(--transition);
+    }
+    
+    .feature h3{
+      font-size:clamp(16px, 3vw, 18px);
+      margin-bottom:8px;
+    }
+    
+    .feature p{
+      font-size:clamp(13px, 2vw, 14px);
+      color:var(--muted);
+      line-height:1.6;
+    }
+    
+    .feature:hover{
+      transform:translateY(-6px);
+      border-color:rgba(255,255,255,0.08);
+      box-shadow:0 8px 30px rgba(0,0,0,0.6);
+    }
+
+    /* PRICING */
+    #pricing h2{
+      font-size:clamp(24px, 5vw, 32px);
+      margin-bottom:8px;
+    }
+    
+    .pricing-container{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(min(100%, 300px),1fr));
+      gap:clamp(20px, 4vw, 28px);
+    }
+    
+    .pricing-section{
+      margin-top:10px;
+    }
+    
+    .pricing-section h3{
+      margin-bottom:12px;
+      font-size:clamp(18px, 3.5vw, 24px);
+    }
+    
+    .pricing-section > p{
+      font-size:clamp(13px, 2vw, 14px);
+      margin-bottom:12px;
+    }
+    
+    .pricing{
+      display:grid;
+      gap:clamp(14px, 3vw, 18px);
+      grid-template-columns:1fr;
+      margin-top:18px;
+    }
+
+    .plan{
+      padding:clamp(18px, 3vw, 22px);
+      border-radius:14px;
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.06);
+      transition:var(--transition);
+    }
+    
+    .plan h4{
+      font-size:clamp(16px, 3vw, 18px);
+      margin-bottom:8px;
+    }
+    
+    .plan .price{
+      font-size:clamp(20px, 4vw, 24px);
+      font-weight:700;
+      margin-bottom:12px;
+      color:var(--accent-color);
+    }
+    
+    .plan ul{
+      list-style:none;
+      margin:12px 0;
+    }
+    
+    .plan ul li{
+      padding:6px 0;
+      font-size:clamp(12px, 2vw, 14px);
+      color:var(--muted);
+      position:relative;
+      padding-left:20px;
+    }
+    
+    .plan ul li:before{
+      content:"✓";
+      position:absolute;
+      left:0;
+      color:#6ee7b7;
+    }
+    
+    .plan .btn{
+      width:100%;
+      margin-top:12px;
+    }
+
+    .plan:hover{
+      transform:translateY(-5px);
+      border-color:rgba(255,255,255,0.2);
+    }
+
+    .testimonials{
+      grid-template-columns:repeat(auto-fit,minmax(min(100%, 280px),1fr));
+    }
+
+    .testimonial{
+      padding:clamp(16px, 3vw, 20px);
+      background:var(--glass);
+      border-radius:12px;
+      border:1px solid transparent;
+      transition:var(--transition);
+    }
+    
+    .testimonial strong{
+      display:block;
+      margin-bottom:8px;
+      font-size:clamp(14px, 2.5vw, 16px);
+    }
+    
+    .testimonial p{
+      font-size:clamp(12px, 2vw, 14px);
+      line-height:1.6;
+    }
+    
+    .testimonial:hover{border-color:rgba(255,255,255,0.1);}
+
+    /* ---------------- FOOTER ---------------- */
+    footer{
+      margin-top:clamp(32px, 6vw, 48px);
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      color:var(--muted);
+      gap:16px;
+      font-size:clamp(12px, 2vw, 14px);
+    }
+
+    footer a{
+      color:var(--muted);
+      text-decoration:none;
+      font-size:clamp(12px, 2vw, 14px);
+    }
+    
+    footer a:hover{
+      color:#fff;
+    }
+
+    /* ---------------- SCROLL REVEAL ---------------- */
+    .reveal{
+      opacity:0;
+      transform:translateY(20px);
+      transition:1s ease;
+    }
+    .reveal.visible{
+      opacity:1;
+      transform:none;
+    }
+
+    /* ---------------- RESPONSIVE BREAKPOINTS ---------------- */
+
+    /* Tablet and above */
+    @media(min-width:768px){
+      .hero{
+        grid-template-columns:1fr 420px;
+      }
+    }
+
+    /* Mobile */
+    @media(max-width:767px){
+      body{
+        padding:16px;
+      }
+      
+      .hero{
+        grid-template-columns:1fr;
+      }
+      
+      .hero-left{
+        order:1;
+      }
+      
+      .card{
+        order:2;
+      }
+      
+      nav{
+        display:none;
+        flex-direction:column;
+        position:absolute;
+        top:80px;
+        left:16px;
+        right:16px;
+        padding:16px;
+        background:rgba(11,18,32,0.98);
+        border-radius:12px;
+        border:1px solid rgba(255,255,255,0.1);
+        z-index:1000;
+        box-shadow:0 8px 30px rgba(0,0,0,0.8);
+      }
+      
+      nav.show{
+        display:flex;
+      }
+      
+      nav a{
+        width:100%;
+        text-align:center;
+        padding:12px;
+      }
+
+      .mobile-toggle{
+        display:inline-block;
+      }
+      
+      .cta-row{
+        flex-direction:column;
+      }
+      
+      .cta-row .btn{
+        width:100%;
+      }
+      
+      .strip{
+        justify-content:center;
+      }
+      
+      .pricing-container{
+        grid-template-columns:1fr;
+      }
+      
+      footer{
+        flex-direction:column;
+        text-align:center;
+      }
+      
+      footer > div:last-child{
+        justify-content:center;
+      }
+    }
+
+    /* Very small screens */
+    @media(max-width:400px){
+      .brand h1{
+        font-size:14px;
+      }
+      
+      .stat{
+        font-size:10px;
+        padding:6px 10px;
+      }
+      
+      #signup{
+        flex-direction:column;
+      }
+      
+      #signup input,
+      #signup select,
+      #signup button{
+        width:100%;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <div class="brand">
+        <div class="logo">AA</div>
+        <div>
+          <h1>Recreation Investors</h1>
+          <p class="muted">Invest smarter. Grow confidently.</p>
+        </div>
+      </div>
+
+      <button class="mobile-toggle" id="menuBtn">
+        ☰
+      </button>
+
+      <nav id="navMenu">
+        <a href="#hero">HOME</a>
+        <a href="#testimonials">Customers</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#signup" class="cta">Sign Up</a>
+      </nav>
+    </header>
+
+    <section class="hero" id="hero">
+      <div class="hero-left">
+        <span class="eyebrow">New • Smart Portfolios</span>
+        <h2>Grow your money — expert-guided strategies with transparent fees</h2>
+        <p>Expert-guided investing that adapts to your goals. Personalized stock selection, diversified funds & transparent reporting.</p>
+
+        <div class="cta-row">
+          <a href="#signup" class="btn primary">Start Growing Now</a>
+          <a href="#pricing" class="btn ghost">See Plans & Courses</a>
+        </div>
+
+        <div class="strip">
+          <div class="stat">80+ clients • <strong>9.8% Annualized</strong></div>
+          <div class="stat">3 investors • <strong>Partners</strong></div>
+          <div class="stat">₹4,00,000+ • <strong>AUM</strong></div>
+        </div>
+
+        <form id="signup">
+          <input type="email" name="email" placeholder="Enter your email" required>
+          <select name="goal">
+            <option>Managed Account</option>
+            <option>Training Program</option>
+          </select>
+          <button type="submit" class="btn primary">Explore</button>
+        </form>
+      </div>
+
+      <aside class="card">
+        <div class="balance">
+          <div>
+            <div class="small muted">Platinum Account Performance</div>
+            <div class="big">+24.6% YTD</div>
+          </div>
+          <div class="chip">+2.1% (30 Days)</div>
+        </div>
+
+        <svg class="spark" viewBox="0 0 200 60" style="width:100%;height:70px;">
+          <path d="M0 40 L20 35 L40 30 L60 28 L80 22 L100 24 L120 18 L140 20 L160 12 L180 16 L200 8"
+            fill="none" stroke="url(#g)" stroke-width="3" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="g" x1="0" x2="1">
+              <stop offset="0%" stop-color="#6ee7b7"/>
+              <stop offset="100%" stop-color="#60a5fa"/>
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <div class="small muted" style="margin-top:10px;">Risk: Moderate • Focus: Growth & Diversification</div>
+      </aside>
+    </section>
+
+    <section id="features" class="features">
+      <div class="feature reveal">
+        <h3>Smart Index Portfolios</h3>
+        <p>Choose from optimized portfolios for growth, balance, or conservative investing.</p>
+      </div>
+
+      <div class="feature reveal">
+        <h3>Automatic Rebalancing</h3>
+        <p>Your allocation stays on track with tax-efficient adjustments and monthly planning.</p>
+      </div>
+
+      <div class="feature reveal">
+        <h3>Low & Transparent Fees</h3>
+        <p>One annual fee for management, zero hidden commissions on trades.</p>
+      </div>
+      
+      <div class="feature reveal">
+        <h3>Premium Learning Programs</h3>
+        <p>Master F&O, Intraday, and Crypto trading with our expert-led monthly courses.</p>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div style="text-align:center; margin-bottom: 24px;">
+        <h2>Our Services: Managed Funds & Training</h2>
+        <p class="muted">Choose the path to financial freedom that fits you best.</p>
+      </div>
+      
+      <div class="pricing-container">
+        <div class="pricing-section reveal">
+          <h3>Managed Portfolio Accounts 💰</h3>
+          <p class="muted">Expert-guided funds for long-term wealth creation.</p>
+          <div class="pricing">
+            <div class="plan reveal">
+              <h4>Gold Account</h4>
+              <div class="price">₹1,500 / mo</div>
+              <ul>
+                <li>Personalized Stock Selection</li>
+                <li>Monthly Growth Planning</li>
+                <li>Risk Management (Standard)</li>
+              </ul>
+              <button class="btn primary">Start Gold</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pricing-section reveal">
+          <h3>Stock Market Training 🎓</h3>
+          <p class="muted">Programs to make you a confident investor or trader.</p>
+          <div class="pricing">
+            <div class="plan reveal">
+              <h4>Elite Mastery Pass 🚀</h4>
+              <div class="price">₹999 / mo</div>
+              <ul>
+                <li>Access All Courses (F&O, Crypto, etc.)</li>
+                <li>Weekly Live Trading Sessions</li>
+                <li>Dedicated Advisor Chat</li>
+              </ul>
+              <button class="btn primary">Get Access</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimonials" class="testimonials">
+      <div class="testimonial reveal">
+        <strong>Ayush Ramchandra Kharpuriya</strong>
+        <p class="muted">"I love the automated portfolios — low cost & reliable."</p>
+      </div>
+
+      <div class="testimonial reveal">
+        <strong>Adhvith Uchil</strong>
+        <p class="muted">"The UI is smooth — I monitor my investments easily."</p>
+      </div>
+    </section>
+
+    <footer>
+      <div>
+        <strong>Recreation Investors</strong>
+        <p style="font-size:13px" class="muted">© <span id="year"></span> All rights reserved.</p>
+      </div>
+
+      <div style="display:flex;gap:12px;">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // YEAR
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Mobile Navigation
+    const menuBtn = document.getElementById("menuBtn");
+    const navMenu = document.getElementById("navMenu");
+
+    menuBtn.addEventListener("click", () => {
+      navMenu.classList.toggle("show");
+    });
+
+    // Close menu when clicking a link
+    navMenu.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navMenu.classList.remove("show");
+      });
+    });
+
+    // Scroll Reveal
+    const reveals = document.querySelectorAll(".reveal");
+    const revealObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.2});
+
+    reveals.forEach(el=>revealObserver.observe(el));
+
+    // Form submission handler
+    document.getElementById("signup").addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("Thanks for your interest! We'll be in touch soon.");
+    });
+  </script>
+
+</body>
+</html>

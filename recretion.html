@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recreation Investors — Portfolio & Advisory</title>
+  <meta name="description" content="Recreation Investors — portfolio management, investment advisory, plans: Gold, Platinum, Diamond." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --green-900:#0c1c34;
+      --green-800:#065f46;
+      --green-700:#087f5b;
+      --green-600:#16a34a;
+      --accent:#d1fae5;
+      --muted:#cfeee0;
+      --card: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --max-width:1100px;
+      --radius:14px;
+      --shadow: 0 10px 30px rgba(2,6,23,0.6);
+      --gap:18px;
+      --transition: 260ms cubic-bezier(.2,.9,.3,1);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* Reset & base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,var(--green-900) 0%, #042f27 100%);
+      color: #e9fff3;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      font-size:16px;
+    }
+
+    .container{max-width:var(--max-width);margin:0 auto;padding:28px}
+
+    /* Header */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      position:sticky;
+      top:0;
+      z-index:60;
+      background:linear-gradient(180deg, rgba(2,8,12,0.25), rgba(2,8,12,0.08));
+      backdrop-filter: blur(6px);
+      padding:12px 0;
+      border-bottom:1px solid rgba(255,255,255,0.02);
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:56px;height:56px;border-radius:12px;
+      background:linear-gradient(135deg,var(--green-600),var(--green-700));
+      display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--green-900);
+      box-shadow:0 6px 18px rgba(0,0,0,0.25);
+      font-family:Inter, sans-serif;
+      letter-spacing:0.6px;
+      font-size:18px;
+    }
+    .brand-text{display:flex;flex-direction:column;line-height:1}
+    .brand-text .title{font-weight:800}
+    .brand-text .subtitle{font-size:12px;color:var(--muted)}
+
+    /* Nav */
+    .nav{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .nav a{
+      color:var(--accent);
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+      font-weight:600;
+      transition:var(--transition);
+      font-size:15px;
+    }
+    .nav a:hover,
+    .nav a:focus{
+      background:rgba(255,255,255,0.03);
+      outline:none;
+      transform:translateY(-2px);
+    }
+
+    /* Mobile menu button */
+    .menu-btn{
+      display:none;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      padding:8px;
+      border-radius:10px;
+      color:var(--accent);
+      cursor:pointer;
+    }
+    .menu-btn:focus{outline:2px solid rgba(255,255,255,0.06);}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start;margin-top:18px}
+    .hero-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:28px;border-radius:var(--radius);
+      backdrop-filter:blur(6px);
+      box-shadow:var(--shadow);
+      transition:transform var(--transition), box-shadow var(--transition);
+    }
+    .hero-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,0.6)}
+    h1{margin:0;font-size:30px;line-height:1.06}
+    p.lead{color:var(--muted);margin-top:12px;font-size:15px}
+    .cta{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      background:linear-gradient(90deg,var(--green-600),var(--green-700));
+      color:white;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700;
+      transition:var(--transition);
+      box-shadow:0 6px 18px rgba(6,95,70,0.12);
+    }
+    .btn:hover{transform:translateY(-3px)}
+    .btn.outline{
+      background:transparent;border:2px solid rgba(255,255,255,0.06);
+      color:var(--accent);font-weight:700;
+    }
+
+    /* Features */
+    .features{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+    .feature{flex:1;min-width:140px;padding:12px;border-radius:10px;background:var(--glass);font-weight:700;text-align:center}
+
+    /* Aside (small card) */
+    aside.hero-card h3{margin-top:0}
+    aside .small-note{margin-top:12px;padding:12px;border-radius:10px;background:rgba(255,255,255,0.03)}
+
+    /* Plans */
+    section#plans h2{margin-top:28px}
+    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+    .plan{
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      padding:18px;border-radius:12px;transition:transform var(--transition);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .plan:hover{transform:translateY(-6px)}
+    .plan h3{margin:0 0 6px 0}
+    .plan .price{font-weight:800;color:var(--green-600)}
+    .plan ul{margin:8px 0 12px 18px;color:var(--muted)}
+    .plan .foot{font-size:13px;color:var(--muted)}
+
+    /* Services & About */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+    .card{background:var(--hero-glass, rgba(255,255,255,0.02));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .pill{display:inline-block;padding:8px 12px;border-radius:999px;background:rgba(0,0,0,0.12);font-weight:700;color:var(--accent)}
+
+    /* Contact & Footer */
+    footer{margin-top:28px;padding:18px 0;color:var(--muted);text-align:center}
+    .contact-row{display:flex;gap:14px;align-items:center;justify-content:center;margin-top:12px;flex-wrap:wrap}
+    .chip{background:rgba(255,255,255,0.02);padding:8px 12px;border-radius:999px}
+    .contact-actions{margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:center}
+
+    /* Utilities */
+    .muted{color:var(--muted)}
+    .highlight{color:var(--green-600);font-weight:800}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+    /* Mobile nav overlay */
+    .mobile-nav{
+      display:none;
+      position:fixed;inset:0;background:linear-gradient(180deg, rgba(2,8,12,0.88), rgba(2,8,12,0.95));
+      padding:28px;z-index:80;
+    }
+    .mobile-nav .links{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+    .mobile-nav a{font-size:20px;color:var(--accent);text-decoration:none;padding:10px;border-radius:10px}
+
+    /* Small screens */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr}
+      .plans{grid-template-columns:1fr}
+      .two-col{grid-template-columns:1fr}
+      .nav{display:none}
+      .menu-btn{display:inline-flex}
+      header{gap:10px}
+      .container{padding:18px}
+      .hero-card{padding:20px}
+      aside.hero-card{order:2}
+    }
+    @media (max-width:680px){
+      h1{font-size:22px}
+      .logo{width:48px;height:48px}
+      .brand-text .subtitle{font-size:11px}
+      .feature{min-width:120px}
+      .plan ul{margin-left:14px}
+    }
+
+    /* Tiny screens */
+    @media (max-width:420px){
+      .logo{width:44px;height:44px}
+      .brand-text .title{font-size:15px}
+      .hero-card{padding:16px}
+      .btn{padding:9px 12px}
+    }
+
+    /* Simple entrance animation */
+    @keyframes floatIn {
+      from { opacity:0; transform: translateY(10px) scale(.995) }
+      to   { opacity:1; transform: translateY(0) scale(1) }
+    }
+    .animate-in{animation: floatIn .5s var(--transition) both}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand" aria-hidden="false">
+        <div class="logo" aria-hidden="true">RI</div>
+        <div class="brand-text">
+          <div class="title">Recreation Investors</div>
+          <div class="subtitle">Portfolio management & advisory</div>
+        </div>
+      </div>
+
+      <!-- Desktop nav -->
+      <nav class="nav" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#plans">Plans</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <!-- Mobile menu button -->
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
+        ☰ Menu
+      </button>
+    </header>
+
+    <!-- MOBILE NAV OVERLAY -->
+    <div class="mobile-nav" id="mobileNav" hidden>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="logo" style="width:48px;height:48px;font-size:16px">RI</div>
+          <div style="font-weight:800">Recreation Investors</div>
+        </div>
+        <button class="menu-btn" id="menuClose" aria-label="Close menu">✕ Close</button>
+      </div>
+
+      <nav class="links" role="navigation" aria-label="Mobile">
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#plans" class="mobile-link">Plans</a>
+        <a href="#services" class="mobile-link">Services</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+      </nav>
+
+      <div style="margin-top:22px">
+        <a class="btn" href="mailto:recreationinvestors@gmail.com">Email Us</a>
+        <a class="btn outline" href="https://wa.me/919082108719" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+
+    <main>
+      <section class="hero" aria-labelledby="heroHeading">
+        <div class="hero-card animate-in" id="heroLeft">
+          <h1 id="heroHeading">Grow your wealth with expert portfolio management</h1>
+          <p class="lead">We research opportunities, build customized portfolios, and manage risk to generate consistent, sustainable returns. Choose a plan — Gold, Platinum, or Diamond — that fits your goals.</p>
+
+          <div class="features" role="list" aria-label="Key features">
+            <div class="feature" role="listitem">Personalized plans</div>
+            <div class="feature" role="listitem">Risk-managed strategies</div>
+            <div class="feature" role="listitem">24/7 support</div>
+          </div>
+
+          <div class="cta">
+            <a class="btn" href="#contact">Get Started</a>
+            <a class="btn outline" href="#plans">View Plans</a>
+          </div>
+
+          <p style="margin-top:14px;font-size:13px" class="muted">Email: <a href="mailto:recreationinvestors@gmail.com" style="color:var(--accent);text-decoration:none">recreationinvestors@gmail.com</a> &nbsp; | &nbsp; Phone: <a href="tel:+919082108719" style="color:var(--accent);text-decoration:none">+91 90821 08719</a></p>
+        </div>
+
+        <aside class="hero-card animate-in" id="heroRight" aria-labelledby="asideHeading">
+          <h3 id="asideHeading" style="margin-top:0">What is the stock market?</h3>
+          <p class="muted">A dynamic marketplace where investors buy and sell shares of publicly traded companies — connecting businesses seeking capital with investors aiming to grow wealth.</p>
+
+          <div class="small-note" aria-hidden="false">
+            <strong>Our focus</strong>
+            <ul style="margin:8px 0 0 18px;color:var(--muted)">
+              <li>Portfolio management (Gold, Platinum, Diamond)</li>
+              <li>Stock market advisory & insights</li>
+              <li>Long-term wealth creation</li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+
+      <section id="plans" aria-labelledby="plansHeading">
+        <h2 id="plansHeading">Investment Accounts</h2>
+        <div class="plans" role="list">
+          <article class="plan" role="listitem" aria-labelledby="goldTitle">
+            <h3 id="goldTitle">Gold</h3>
+            <div class="price">Best for beginners</div>
+            <p class="muted">4% of invested amount</p>
+            <ul>
+              <li>Risk profile analysis</li>
+              <li>Basic research reports & monthly updates</li>
+              <li>Low entry barrier</li>
+              <li>Guided approach for new investors</li>
+            </ul>
+            <div class="foot">Peace of mind: expert handling of your portfolio.</div>
+          </article>
+
+          <article class="plan" role="listitem" aria-labelledby="platinumTitle">
+            <h3 id="platinumTitle">Platinum</h3>
+            <div class="price">For serious investors</div>
+            <p class="muted">6% of invested amount</p>
+            <ul>
+              <li>Dedicated portfolio management</li>
+              <li>IPO participation guidance</li>
+              <li>Exclusive stock picks</li>
+              <li>Quarterly in-depth reports</li>
+            </ul>
+            <div class="foot">Access to IPOs and premium stocks.</div>
+          </article>
+
+          <article class="plan" role="listitem" aria-labelledby="diamondTitle">
+            <h3 id="diamondTitle">Diamond</h3>
+            <div class="price">HNIs — Maximum growth</div>
+            <p class="muted">8% of invested amount (company fee) · 10% on profits earned</p>
+            <ul>
+              <li>Everything in Gold & Platinum</li>
+              <li>Defensive risk-free strategies</li>
+              <li>Tailor-made portfolio</li>
+              <li>Personal investment consultant</li>
+            </ul>
+            <div class="foot">24/7 premium support & VIP treatment.</div>
+          </article>
+        </div>
+      </section>
+
+      <section id="services" class="two-col" aria-labelledby="servicesHeading">
+        <div class="card animate-in" style="animation-delay:.06s">
+          <h3 id="servicesHeading">Our Services</h3>
+          <ul style="color:var(--muted)">
+            <li>Investment advisory</li>
+            <li>Portfolio management (Gold, Platinum, Diamond plans)</li>
+            <li>IPO guidance and premium stock access</li>
+            <li>Customized financial planning & tax efficiency</li>
+          </ul>
+          <p class="muted">We help individuals and businesses grow their wealth by managing investments across diversified sectors with disciplined strategies.</p>
+        </div>
+
+        <div class="card animate-in" style="animation-delay:.12s">
+          <h3>Why work with us?</h3>
+          <p class="muted">Expert research team, structured plans, and risk-managed growth. We focus on long-term returns through continuous monitoring and personalized strategies.</p>
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
+            <div class="pill">Tailor-made portfolios</div>
+            <div class="pill">Exclusive insights</div>
+            <div class="pill">Dedicated support</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="card animate-in" style="margin-top:18px" aria-labelledby="aboutHeading">
+        <h3 id="aboutHeading">About Us</h3>
+        <p class="muted">Recreation Investors is a portfolio management and investment advisory company. We research opportunities, build customized portfolios, and manage risk to generate consistent, sustainable returns. We give clients access to the stock market with expert guidance, structured plans, and risk-managed growth.</p>
+      </section>
+
+      <section id="contact" class="card animate-in" style="margin-top:18px" aria-labelledby="contactHeading">
+        <h3 id="contactHeading">Contact & Partnership</h3>
+        <div class="contact-row" role="list">
+          <div class="chip" role="listitem">📧 recreationinvestors@gmail.com</div>
+          <div class="chip" role="listitem">📞 +91 74000 29922</div>
+          <div class="chip" role="listitem">📸 @recreation_investors</div>
+        </div>
+
+        <div class="contact-actions">
+          <a class="btn" href="mailto:recreationinvestors@gmail.com">Email Us</a>
+          <a class="btn outline" href="tel:+917400029922">Call</a>
+          <a class="btn outline" href="https://wa.me/919082108719" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+
+        <p style="margin-top:12px;font-size:13px;color:var(--muted)"><strong>Disclaimer:</strong> Investments in the stock market are subject to market risks, including potential capital loss. Recreation Investors does not guarantee fixed returns. Past performance is not indicative of future results. Invest based on your financial goals and risk appetite.</p>
+      </section>
+    </main>
+
+    <footer>
+      <div style="font-weight:700">"An ageless investment opportunity"</div>
+      <div style="margin-top:8px;color:var(--muted)">For partnership & inquiries: recreationinvestors@gmail.com · +91 74000 29922 · @recreation_investors</div>
+      <div style="margin-top:10px;font-size:12px;color:rgba(255,255,255,0.18)">© Recreation Investors</div>
+    </footer>
+  </div>
+
+  <script>
+    // Mobile menu open/close logic
+    (function(){
+      const menuBtn = document.getElementById('menuBtn');
+      const menuClose = document.getElementById('menuClose');
+      const mobileNav = document.getElementById('mobileNav');
+
+      function openMenu(){
+        mobileNav.hidden = false;
+        menuBtn.setAttribute('aria-expanded','true');
+        document.body.style.overflow = 'hidden';
+        // Trap focus: focus first link
+        const firstLink = mobileNav.querySelector('.mobile-link');
+        if(firstLink) firstLink.focus();
+      }
+      function closeMenu(){
+        mobileNav.hidden = true;
+        menuBtn.setAttribute('aria-expanded','false');
+        document.body.style.overflow = '';
+        menuBtn.focus();
+      }
+
+      menuBtn && menuBtn.addEventListener('click', openMenu);
+      menuClose && menuClose.addEventListener('click', closeMenu);
+
+      // Close when clicking a mobile link
+      document.querySelectorAll('.mobile-link').forEach(a=>{
+        a.addEventListener('click', closeMenu);
+      });
+
+      // Close with Escape
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape' && !mobileNav.hidden) closeMenu();
+      });
+
+      // Smooth anchor scrolling
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', function(e){
+          const href = this.getAttribute('href');
+          if(href.length > 1){
+            e.preventDefault();
+            const el = document.querySelector(href);
+            if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+            // close mobile nav if open
+            if(!mobileNav.hidden) closeMenu();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

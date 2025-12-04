@@ -3,648 +3,677 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Responsive</title>
+    <title>Re:Code | Creative Coding & Animation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #00f3ff;
+            --secondary: #bc13fe;
+            --bg: #050505;
+            --surface: rgba(255, 255, 255, 0.05);
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            cursor: none; /* Hide default cursor */
         }
 
-        /* Header Styles */
-        .header {
-            background: linear-gradient(135deg, #000000, #223b40);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .font-mono {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Custom Cursor */
+        #cursor {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .header h1 {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-        }
-
-        .user-avatar {
-            width: 30px;
-            height: 30px;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--primary);
             border-radius: 50%;
-            background: linear-gradient(45deg, #030202, #4ecdc4, #45b7d1, #96ceb4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            mix-blend-mode: difference;
         }
-
-        /* Container */
-        .container {
-            display: flex;
-            min-height: 88vh;
-            margin-top: 70px;
-            background-color: #080c0f;
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            width: 250px;
-            background: linear-gradient(180deg, #040506, #060708);
-            color: white;
-            padding: 20px 0;
+        #cursor-dot {
             position: fixed;
+            top: 0;
             left: 0;
-            top: 70px;
-            height: calc(100vh - 70px);
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-            z-index: 999;
+            width: 4px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
         }
-
-        .sidebar.collapsed {
-            transform: translateX(-100%);
-        }
-
-        .profile {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            border-bottom: 1px solid #4a5a6a;
-        }
-
-        .profile-avatar {
+        body.hovering #cursor {
             width: 50px;
             height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #000000, #312222, #527780, #96ceb4);
-            margin-right: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
+            background-color: rgba(0, 243, 255, 0.1);
+            border-color: transparent;
         }
 
-        .nav-section {
-            margin: 20px 0;
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
         }
 
-        .nav-title {
-            color: #95a5a6;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            padding: 0 20px;
-            margin-bottom: 10px;
-            font-weight: bold;
+        /* Glassmorphism */
+        .glass {
+            background: var(--surface);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
-            color: #bdc3c7;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
+        /* Utility animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .nav-item:hover, .nav-item.active {
-            background-color: #000000;
-            color: white;
-            border-left-color: #3498db;
+        /* Glitch Effect */
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
         }
-
-        .nav-item i {
-            margin-right: 10px;
-            width: 20px;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 250px;
-            padding: 20px;
-            transition: margin-left 0.3s ease;
-        }
-
-        .main-content.expanded {
-            margin-left: 0;
-        }
-
-        /* Mobile Menu Toggle */
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Portfolio Items Header */
-        .portfolio-header { /* Renamed from categories-header */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .portfolio-header h2 { /* Renamed from categories-header */
-            font-size: 1.8rem;
-            color: #2c3e50;
-        }
-
-        .header-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .btn-primary {
-            background-color: #3498db;
-            color: white;
-        }
-
-        .btn-success {
-            background-color: #27ae60;
-            color: white;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        /* Portfolio Grid */
-        .portfolio-grid { /* Renamed from categories-grid */
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .portfolio-card { /* Renamed from category-card */
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-
-        .portfolio-card:hover { /* Renamed from category-card */
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
-            border-color: #2196f3;
-        }
-
-        .portfolio-image { /* Renamed from category-image */
-            width: 100%;
-            height: 120px;
-            object-fit: contain;
-            margin-bottom: 15px;
-            border-radius: 8px;
-        }
-
-        .portfolio-info { /* Renamed from category-info */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .portfolio-name { /* Renamed from category-name */
-            font-weight: bold;
-            color: #2c3e50;
-            font-size: 1.1rem;
-        }
-
-        .portfolio-name-link { /* Renamed from category-name-link */
-            color: #3498db;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .portfolio-name-link:hover { /* Renamed from category-name-link */
-            color: #2980b9;
-        }
-
-        .project-status-info { /* Renamed from quantity-info */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #7f8c8d;
-        }
-
-        .status-label { /* Renamed from quantity-label */
-            font-size: 0.9rem;
-        }
-
-        .status-value { /* Renamed from quantity-value */
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: #27ae60;
-        }
-
-        .status-value.zero { /* Renamed from quantity-value.zero */
-            color: #e74c3c;
-        }
-
-        /* Enhanced Responsive Design */
         
-        /* Large Desktop */
-        @media (min-width: 1200px) {
-            .portfolio-grid {
-                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-                gap: 25px;
-            }
-            
-            .main-content {
-                padding: 30px;
-            }
-            
-            .portfolio-header h2 {
-                font-size: 2rem;
-            }
-        }
-
-        /* Standard Desktop */
-        @media (max-width: 1199px) and (min-width: 1025px) {
-            .portfolio-grid {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 20px;
-            }
-        }
-
-        /* Tablet Landscape */
-        @media (max-width: 1024px) and (min-width: 769px) {
-            .sidebar {
-                width: 220px;
-            }
-            
-            .main-content {
-                margin-left: 220px;
-            }
-            
-            .portfolio-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 18px;
-            }
-            
-            .portfolio-header h2 {
-                font-size: 1.6rem;
-            }
-        }
-
-        /* Tablet Portrait and Mobile Landscape */
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
-            .sidebar {
-                transform: translateX(-100%);
-                width: 280px;
-            }
-
-            .sidebar.show {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 15px;
-            }
-
-            .portfolio-header {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-                margin-bottom: 20px;
-            }
-
-            .header-buttons {
-                justify-content: center;
-            }
-
-            .portfolio-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 15px;
-            }
-
-            .portfolio-card {
-                padding: 15px;
-                min-height: auto;
-            }
-
-            .header h1 {
-                font-size: 1.3rem;
-            }
-
-            .user-info {
-                font-size: 0.8rem;
-            }
-            
-            .portfolio-info {
-                flex-direction: column;
-                align-items: flex-start;
-                text-align: left;
-            }
-            
-            .status-label {
-                font-size: 1.2rem;
-                margin: 10px 0;
-                text-align: center;
-                width: 100%;
-            }
-        }
-
-        /* Mobile Portrait */
-        @media (max-width: 480px) {
-            .header {
-                padding: 10px 15px;
-            }
-
-            .main-content {
-                padding: 10px;
-            }
-
-            .portfolio-card {
-                padding: 12px;
-                background-color: black !important;
-                min-height: 300px;
-            }
-
-            .portfolio-image {
-                height: 80px;
-            }
-
-            .btn {
-                padding: 8px 15px;
-                font-size: 0.8rem;
-            }
-
-            .portfolio-header h2 {
-                font-size: 1.4rem;
-            }
-            
-            .portfolio-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-            
-            .sidebar {
-                width: 250px;
-            }
-            
-            .status-label {
-                font-size: 1rem !important;
-                margin-left: 0 !important;
-                padding: 10px;
-                line-height: 1.4;
-            }
-            
-            .portfolio-info i {
-                font-size: 0.9rem !important;
-                padding: 10px;
-                line-height: 1.5;
-                display: block;
-                margin-top: 10px;
-            }
-        }
-
-        /* Extra Small Mobile */
-        @media (max-width: 360px) {
-            .header {
-                padding: 8px 12px;
-            }
-            
-            .header h1 {
-                font-size: 1.1rem;
-            }
-            
-            .main-content {
-                padding: 8px;
-            }
-            
-            .portfolio-card {
-                padding: 10px;
-                min-height: 280px;
-            }
-            
-            .portfolio-image {
-                height: 70px;
-            }
-            
-            .portfolio-header h2 {
-                font-size: 1.2rem;
-            }
-            
-            .sidebar {
-                width: 220px;
-            }
-            
-            .nav-item {
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-            
-            .profile {
-                padding: 15px;
-            }
-            
-            .profile-avatar {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
-            }
-        }
-
-        /* Overlay for mobile sidebar */
-        .overlay {
-            display: none;
+        canvas {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 998;
+            z-index: -1;
         }
 
-        .overlay.show {
-            display: block;
-        }
+       /* whatsapp floating button */
+  .whatsapp-float {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 9999;
+    display: inline-grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    background: linear-gradient(135deg,#25D366,#128C7E);
+    cursor: pointer;
+    transition: transform .12s ease;
+  }
+  .whatsapp-float:hover { transform: translateY(-3px); }
+  .whatsapp-icon { width: 30px; height: 30px; }
+  @media (max-width:420px) {
+    .whatsapp-float { right: 14px; bottom: 14px; width:56px; height:56px; }
+    .whatsapp-icon { width:26px; height:26px; }
+  }
 
-        /* Ensure content flows properly */
-        @media (max-width: 768px) {
-            .portfolio-info .status-label {
-                word-wrap: break-word;
-                hyphens: auto;
-            }
-            
-            .portfolio-info i {
-                word-wrap: break-word;
-                hyphens: auto;
-            }
-        }
 
-        /* High DPI displays */
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-            .portfolio-image {
-                image-rendering: -webkit-optimize-contrast;
-                image-rendering: crisp-edges;
-            }
-        }
+
     </style>
 </head>
-<body>
-    <div class="header">
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-            <h1> Port<span style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; color: orange;">folio</span></h1>
-        </div>
-        <div class="user-info">
-           
-        </div>
-    </div>
+<body class="antialiased">
 
-    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+    <!-- Custom Cursor DOM -->
+    <div id="cursor"></div>
+    <div id="cursor-dot"></div>
 
-    <div class="container">
-        <div class="sidebar" id="sidebar">
-            <div class="profile">
-                <div class="profile-avatar">💻</div>
-                <span>Praful K</span>
+    <!-- Canvas Background -->
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/10 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold tracking-tighter hover-trigger" data-scramble="Recreation_Investors">
+                <span class="text-cyan-400"></span>Recreation_Investors<span class="text-cyan-400"></span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 font-mono text-sm">
+                <a href="#home" class="hover:text-cyan-400 transition-colors hover-trigger" data-scramble="HOME">HOME</a>
+                <a href="#work" class="hover:text-purple-400 transition-colors hover-trigger" data-scramble="PROJECTS"> PROJECTS</a>
+                   <a href="recretion-one.html" class="hover:text-green-400 transition-colors hover-trigger" data-scramble="ABOUT"> ABOUT</a>
+                 <a href="recretion-tree.html" class="hover:text-orange-400 transition-colors hover-trigger" data-scramble="PLANS"> PLANS</a>
+                
+             
+                <a href="#contact" class="hover:text-pink-400 transition-colors hover-trigger" data-scramble="CONTACT"> CONTACT</a>
             </div>
 
-            <div class="nav-section">
-                <div class="nav-title">Web Developer</div>
-
-                   <a href="#" class="nav-item active">
-                    <i>📊</i> Home
-                </a>
-                  <a href="home.html" class="nav-item">
-                    <i>🏠</i> About
-                </a>
-                <a href="project.html" class="nav-item">
-                    <i>✨</i> Projects
-                </a>
-                <a href="skill-section.html" class="nav-item">
-                    <i>🚀</i> Skills
-                </a>
-                <a href="contact-section.html" class="nav-item">
-                    <i>✉️</i> Contact
-                </a> 
-            </div>
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-white hover-trigger" id="menuBtn">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
         </div>
+        
+        <!-- Mobile Menu Overlay -->
+        <div id="mobileMenu" class="fixed inset-0 bg-black/95 backdrop-blur-xl transform translate-x-full transition-transform duration-500 flex flex-col items-center justify-center space-y-8 md:hidden h-screen z-40">
+            <button class="absolute top-6 right-6 text-white text-2xl" id="closeMenu">
+                <i class="fas fa-times"></i>
+            </button>
+            <a href="#home" class="text-2xl font-mono hover:text-cyan-400 mobile-link"> HOME</a>
+            <a href="#work" class="text-2xl font-mono hover:text-purple-400 mobile-link"> PROJECTS</a>
+             <a href="#work" class="text-2xl font-mono hover:text-purple-400 mobile-link"> PLANS</a>
+            <a href="#about" class="text-2xl font-mono hover:text-green-400 mobile-link"> ABOUT</a>
+            <a href="#contact" class="text-2xl font-mono hover:text-pink-400 mobile-link"> CONTACT</a>
+        </div>
+    </nav>
 
-        <div class="main-content" id="mainContent">
-            <div class="portfolio-header">
-                <h2 style="color: #e3f2fd;"> Full Stack Developer</h2>
-                <div class="header-buttons">
-                    
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex items-center justify-center relative px-6 pt-20">
+            <div class="max-w-5xl w-full">
+                <p class="font-mono text-cyan-200 mb-4 fade-up">Welcome  </p>
+                <h1 class="text-5xl md:text-8xl font-bold mb-4 leading-tight fade-up" style="transition-delay: 500ms;">
+                     <h1 style="font-size: 30px;"><span style="color: rgb(70, 123, 105);">Recreation_Investors</span></h1>
+                </h1>
+                <h2 class="text-4xl md:text-7xl font-bold text-gray-600 mb-8 fade-up" style="transition-delay: 100ms;">
+                    Expert Portfolio Management 
+                </h2>
+                <p class="max-w-xl text-gray-400 text-lg mb-10 fade-up leading-relaxed" style="transition-delay: 300ms;">
+                  Investments in the stock market are subject to market risks, including potential capital loss. Recreation Investors does not guarantee fixed returns. Past performance is not indicative of future results. Clients should invest based on their financial goals and risk appetite.
+                </p>
+                <div class="fade-up" style="transition-delay: 400ms;">
+                    <a href="#work" class="group relative px-8 py-4 bg-transparent border border-cyan-400 text-cyan-400 font-mono text-sm tracking-wider overflow-hidden inline-block hover-trigger">
+                        <span class="relative z-10 group-hover:text-black transition-colors duration-300">Check my Plan</span>
+                        <div class="absolute inset-0 bg-cyan-400 transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-300 ease-out"></div>
+                    </a>
                 </div>
             </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <i class="fas fa-chevron-down text-cyan-400 text-xl"></i>
+            </div>
+        </section>
 
-            <div class="portfolio-grid">
-                <div class="portfolio-card" style="background-color: black; height: 412px;" >
-                    <img  src="https://www.enjoyprograming.com/assets/logo/resized-logo.jpeg" alt="Web Design Project" class="portfolio-image">
-                    <div class="portfolio-info">
-                        <span class="status-label" style="font-size: 50px; margin-left: 80px; color: #e3f2fd;">IT Skills Development <span style="color: orange;">Program by Enjoy Programming</span></span> <br><br>
+        <!-- Work Section -->
+        <section id="work" class="py-32 px-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center mb-16 fade-up">
+                    <span class="font-mono text-cyan-400 text-xl mr-4">02.</span>
+                    <h2 class="text-3xl md:text-4xl font-bold">Investment Plans</h2>
+                    <div class="h-[1px] bg-white/20 flex-grow ml-6"></div>
+                </div>
 
-                        <i style="font-size: 20px; color: azure;">It's a sector driven by innovation, global demand for IT services, and the increasing adoption of digital technologies across various industries. </i>
-                      
-                        
+                <!-- Projects Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Project Card 1 -->
+                    <div class="group relative perspective-card fade-up hover-trigger">
+                        <div class="glass p-8 rounded-lg h-full transform transition-all duration-500 hover:-translate-y-2 border border-white/5 hover:border-cyan-400/50">
+                            <div class="flex justify-between items-start mb-6">
+                                <i class="fas fa-folder text-4xl text-cyan-400"></i>
+                                <div class="flex space-x-4 text-gray-400">
+                                   
+                                    <a href="#" class="hover:text-white"><i class="fas fa-external-link-alt text-xl"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4 group-hover:text-cyan-400 transition-colors">🥇Gold Account</h3>
+                            <p class="text-gray-400 mb-6 text-sm leading-relaxed">
+                              4% of invested amount Investment advisory Portfolio management Risk profile analysis Basic research reports Monthly updates Low entry barrier Expert portfolio handling
+
+
+                            </p>
+                            <div class="flex flex-wrap gap-3 font-mono text-xs text-cyan-400/80">
+                                <span>  Perfect for beginners & small investors</span>
+                               
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 2 -->
+                    <div class="group relative perspective-card fade-up hover-trigger" style="transition-delay: 100ms;">
+                        <div class="glass p-8 rounded-lg h-full transform transition-all duration-500 hover:-translate-y-2 border border-white/5 hover:border-purple-400/50">
+                            <div class="flex justify-between items-start mb-6">
+                                <i class="fas fa-cube text-4xl text-purple-400"></i>
+                                <div class="flex space-x-4 text-gray-400">
+                                
+                                    <a href="#" class="hover:text-white"><i class="fas fa-external-link-alt text-xl"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4 group-hover:text-purple-400 transition-colors">💎Platinum Account</h3>
+                            <p class="text-gray-400 mb-6 text-sm leading-relaxed">
+                                  6% of invested amount + 5% on profits earned Dedicated portfolio management IPO participation guidance Exclusive high-growth stock picks Quarterly in-depth reports Performance reviews Personal investment 
+
+                            </p>
+                            <div class="flex flex-wrap gap-3 font-mono text-xs text-purple-400/80">
+                                <span> serious investors seeking faster growth</span>
+                               
+                        </div></span>
+                            </div>
+                    </div>
+
+                    <!-- Project Card 3 -->
+                    <div class="group relative perspective-card fade-up hover-trigger" style="transition-delay: 200ms;">
+                        <div class="glass p-8 rounded-lg h-full transform transition-all duration-500 hover:-translate-y-2 border border-white/5 hover:border-green-400/50">
+                            <div class="flex justify-between items-start mb-6">
+                                <i class="fas fa-terminal text-4xl text-green-400"></i>
+                                <div class="flex space-x-4 text-gray-400">
+                                    
+                                    <a href="#" class="hover:text-white"><i class="fas fa-external-link-alt text-xl"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4 group-hover:text-green-400 transition-colors">💠Diamond Account</h3>
+                            <p class="text-gray-400 mb-6 text-sm leading-relaxed">
+                                8% of invested amount+ 10% on profits earned Everything in Gold & Platinum Risk-free defensive strategies Diversified sector portfolio Exclusive 1-on-1 sessions Customized financial planning Tax efficiency guidance 24/7 premium support
+                            </p>
+                            <div class="flex flex-wrap gap-3 font-mono text-xs text-green-400/80">
+                                <span>For HNI investors seeking maximum growth</span>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats / Code Section -->
+        <section class="py-20 bg-cyan-900/10 border-y border-cyan-500/10 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="fade-up">
+                    <h2 class="text-3xl font-bold mb-6">About Us</h2>
+                    <p class="text-gray-400 mb-6">
+                       Recreation Investors is a portfolio management and investment advisory company dedicated to helping individuals and businesses grow their wealth through strategic stock market investments.
+                    </p>
+                    
+                    <!-- Simulated Code Block -->
+                    <div class="bg-black/50 p-6 rounded-lg font-mono text-xs md:text-sm border border-white/10 shadow-2xl">
+                        <div class="flex space-x-2 mb-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div id="code-typer" class="text-gray-300">
+                         <span style="color: aqua;">   01   Ayush Ramchandra Kharpuriya.  </span> <span style="color: cornflowerblue;"> Director & Founder </span> (Portfolio & client handling) "I love the automated portfolios — easy, low-cost, and my returns have improved steadily since I switched 
+                          <div> <br> <br></div>
+                          <div> <span style="color: aqua;"> 02 Adhvith Uchil </span> <span style="color: cornflowerblue;">Co-Founder</span>  (Marketing & Branding) "Great mobile experience — I check my portfolio and rebalance while commuting."</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Circular Progress Bars (Canvas based in JS) -->
+                <div class="grid grid-cols-2 gap-8 fade-up">
+                    <div class="flex flex-col items-center">
+                        <div class="relative w-32 h-32 flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90">
+                                <circle cx="64" cy="64" r="60" stroke="#1f2937" stroke-width="8" fill="transparent"></circle>
+                                <circle id="circle1" cx="64" cy="64" r="60" stroke="#06b6d4" stroke-width="8" fill="transparent" stroke-dasharray="377" stroke-dashoffset="377" class="transition-all duration-1000"></circle>
+                            </svg>
+                            
+                            <span class="absolute text-2xl font-bold">98%</span>
+                        </div>
+                        <span class="mt-4 font-mono text-sm text-gray-400">98% active portfolio clients </span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="relative w-32 h-32 flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90">
+                                <circle cx="64" cy="64" r="60" stroke="#1f2937" stroke-width="8" fill="transparent"></circle>
+                                <circle id="circle2" cx="64" cy="64" r="60" stroke="#a855f7" stroke-width="8" fill="transparent" stroke-dasharray="377" stroke-dashoffset="377" class="transition-all duration-1000"></circle>
+                            </svg>
+                            <span class="absolute text-2xl font-bold">85%</span>
+                        </div>
+                        <span class="mt-4 font-mono text-sm text-gray-400">3 company investors</span>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-32 px-6 text-center">
+            <div class="max-w-2xl mx-auto fade-up">
+                <span class="font-mono text-cyan-400 mb-4 block">04. CONTACT </span>
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Get In Touch</h2>
+                <p class="text-gray-400 text-lg mb-12">
+                    Whether you have a question or just want to say hi, my inbox is always open. I'll try my best to get back to you!
+                </p>
+                <a href="mailto:ayushkharpuriyaofficial@gmail.com" class="px-8 py-4 border border-cyan-400 text-cyan-400 font-mono rounded hover:bg-cyan-400/10 transition-colors duration-300 hover-trigger">
+                    Say Hello
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-6 text-center text-gray-500 font-mono text-sm">
+            <div class="social-links mb-4 space-x-6">
+                <a href="" class="hover:text-cyan-400 transition-colors"><i class="fab fa-whatsapp"></i></a>
+                <a href="" class="hover:text-cyan-400 transition-colors"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="hover:text-cyan-400 transition-colors"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="hover:text-cyan-400 transition-colors"><i class="fab fa-telegram"></i></a>
+            </div>
+            <p>Recreation Investors @ 2025 Recreation Investors — All rights reserved</p>
+        </footer>
+    </main>
+    <a class="whatsapp-float"
+   href="https://wa.me/+7400029222"
+   target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <!-- WhatsApp SVG icon -->
+  <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M20.52 3.48A11.88 11.88 0 0012 .12 11.88 11.88 0 003.48 3.48 11.88 11.88 0 00.12 12c0 2.14.56 4.17 1.64 5.98L.12 24l5.3-1.38A11.88 11.88 0 0012 23.88c2.14 0 4.17-.56 5.98-1.64A11.88 11.88 0 0023.88 12c0-3.18-1.24-6.16-3.36-8.52z" fill="#25D366"/>
+    <path d="M17.3 14.7c-.3-.1-1.74-.86-2.02-.96-.28-.1-.48-.15-.68.1-.2.24-.77.96-.94 1.16-.17.2-.33.24-.62.08-.3-.16-1.27-.47-2.41-1.49-.89-.78-1.49-1.74-1.67-2.04-.18-.3-.02-.46.13-.6.13-.13.3-.33.45-.5.15-.17.2-.28.3-.47.1-.18.05-.34-.02-.47-.07-.12-.68-1.64-.93-2.25-.24-.6-.49-.52-.68-.53-.18 0-.39-.01-.6-.01-.2 0-.52.07-.79.36-.27.29-1.03 1.01-1.03 2.46 0 1.45 1.05 2.85 1.2 3.05.15.2 2.07 3.17 5.02 4.32 2.95 1.15 2.95.77 3.48.72.53-.05 1.74-.71 1.99-1.39.25-.68.25-1.26.18-1.39-.07-.13-.28-.2-.57-.3z" fill="#fff"/>
+  </svg>
+</a>
+
 
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            const mainContent = document.getElementById('mainContent');
-            
-            if (window.innerWidth <= 768) {
-                sidebar.classList.toggle('show');
-                overlay.classList.toggle('show');
-            } else {
-                sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('expanded');
+        /**
+         * Re:Code Core JavaScript
+         * Handles Animation Loop, Particle System, Cursor, and DOM Interactions
+         */
+
+        // --- 1. Canvas Background (Particle Network) ---
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        
+        // Configuration
+        const PARTICLE_COUNT = window.innerWidth < 768 ? 50 : 100;
+        const CONNECT_DISTANCE = 150;
+        const MOUSE_RADIUS = 200;
+        
+        // Mouse State
+        let mouse = { x: null, y: null };
+
+        // Resize Handling
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Particle Class
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+                this.size = Math.random() * 2 + 1;
+                this.color = Math.random() > 0.5 ? '#00f3ff' : '#bc13fe'; // Cyan or Purple
             }
-        }
 
-        function closeSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            
-            sidebar.classList.remove('show');
-            overlay.classList.remove('show');
-        }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
 
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            const mainContent = document.getElementById('mainContent');
-            
-            if (window.innerWidth > 768) {
-                sidebar.classList.remove('show');
-                overlay.classList.remove('show');
-                if (sidebar.classList.contains('collapsed')) {
-                    mainContent.classList.add('expanded');
-                } else {
-                    mainContent.classList.remove('expanded');
+                // Bounce off edges
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                // Mouse Interaction
+                if (mouse.x != null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx*dx + dy*dy);
+                    
+                    if (distance < MOUSE_RADIUS) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const force = (MOUSE_RADIUS - distance) / MOUSE_RADIUS;
+                        const directionX = forceDirectionX * force * 2; // repulsion strength
+                        const directionY = forceDirectionY * force * 2;
+                        
+                        this.x -= directionX;
+                        this.y -= directionY;
+                    }
                 }
-            } else {
-                sidebar.classList.remove('collapsed');
-                mainContent.classList.remove('expanded');
             }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        // Initialize Particles
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+
+        // Animation Loop
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                // Connect particles
+                for (let j = i; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < CONNECT_DISTANCE) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(100, 100, 255, ${1 - distance/CONNECT_DISTANCE})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+
+        // --- 2. Custom Cursor Logic ---
+        const cursor = document.getElementById('cursor');
+        const cursorDot = document.getElementById('cursor-dot');
+
+        document.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            
+            // Smooth cursor movement for outer ring
+            cursor.animate({
+                left: `${e.clientX}px`,
+                top: `${e.clientY}px`
+            }, { duration: 500, fill: "forwards" });
+
+            // Instant movement for dot
+            cursorDot.style.left = `${e.clientX}px`;
+            cursorDot.style.top = `${e.clientY}px`;
         });
 
-        // Close sidebar when clicking on nav items on mobile
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    closeSidebar();
+        // Hover Effects for Cursor
+        document.querySelectorAll('.hover-trigger').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        });
+
+
+        // --- 3. Text Scramble Effect (Hacker Effect) ---
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
+        
+        document.querySelectorAll('[data-scramble]').forEach(item => {
+            item.addEventListener('mouseenter', event => {
+                let iteration = 0;
+                const originalText = event.target.dataset.scramble; // Use data attribute
+                
+                clearInterval(item.interval);
+                
+                item.interval = setInterval(() => {
+                    event.target.innerText = event.target.innerText
+                        .split("")
+                        .map((letter, index) => {
+                            if(index < iteration) {
+                                return originalText[index];
+                            }
+                            return letters[Math.floor(Math.random() * 26)];
+                        })
+                        .join("");
+                    
+                    if(iteration >= originalText.length){ 
+                        clearInterval(item.interval);
+                        // Ensure final text is correct
+                        event.target.innerText = originalText;
+                    }
+                    
+                    iteration += 1 / 3;
+                }, 30);
+            });
+        });
+
+
+        // --- 4. Intersection Observer for Scroll Animations ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Trigger circle animation if it's that section
+                    if (entry.target.querySelector('#circle1')) {
+                        setTimeout(() => {
+                            document.getElementById('circle1').style.strokeDashoffset = '75'; // 80% approx
+                            document.getElementById('circle2').style.strokeDashoffset = '132'; // 65% approx
+                        }, 500);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+
+        // --- 5. Mobile Menu Logic ---
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMenu = document.getElementById('closeMenu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            const isOpen = mobileMenu.classList.contains('translate-x-0');
+            if (isOpen) {
+                mobileMenu.classList.remove('translate-x-0');
+                mobileMenu.classList.add('translate-x-full');
+            } else {
+                mobileMenu.classList.remove('translate-x-full');
+                mobileMenu.classList.add('translate-x-0');
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        closeMenu.addEventListener('click', toggleMenu);
+        
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+
+        // --- 6. Typewriter Effect for Code Block ---
+        const codeText = `const studio = new CreativeCoding();
+studio.init({
+  performance: 'high',
+  design: 'modern',
+  responsive: true
+});
+
+function render() {
+  requestAnimationFrame(render);
+  studio.update();
+  studio.draw();
+}
+
+render();`;
+
+        const typeWriterElement = document.getElementById('code-typer');
+        let typeIndex = 0;
+
+      //  function typeCode() {
+            if (typeIndex < codeText.length) {
+                let char = codeText.charAt(typeIndex);
+                if (char === '\n') char = '<br>';
+                else if (char === ' ') char = '&nbsp;';
+                
+                // Color syntax highlighting simulation (simple)
+                if (['const', 'new', 'function', 'true'].includes(codeText.substring(typeIndex, typeIndex + 5).trim())) {
+                     // Simple span wrap could go here, but keeping it simple for raw typing feel
+                }
+
+                typeWriterElement.innerHTML += char;
+                typeIndex++;
+                setTimeout(typeCode, Math.random() * 30 + 10);
+            }
+      //  }
+        
+        // Start typing when the section is visible
+        const codeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && typeIndex === 0) {
+                    typeCode();
                 }
             });
         });
+        codeObserver.observe(typeWriterElement);
+
+
+        // --- 7. Navbar Scroll Effect ---
+        let lastScroll = 0;
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll <= 0) {
+                navbar.classList.remove('shadow-lg');
+                navbar.style.transform = 'translateY(0)';
+            } else {
+                navbar.classList.add('shadow-lg');
+            }
+
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                // Scrolling down
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                // Scrolling up
+                navbar.style.transform = 'translateY(0)';
+            }
+            lastScroll = currentScroll;
+        });
+
     </script>
 </body>
 </html>
